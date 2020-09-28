@@ -43,7 +43,7 @@ import no.nordicsemi.android.support.v18.scanner.ScanResult;
 /**
  * DeviceListAdapter class is list adapter for showing scanned Devices name, address and RSSI image based on RSSI values.
  */
-class DeviceListAdapter extends BaseAdapter {
+public class DeviceListAdapter extends BaseAdapter {
 	private static final int TYPE_TITLE = 0;
 	private static final int TYPE_ITEM = 1;
 	private static final int TYPE_EMPTY = 2;
@@ -51,7 +51,7 @@ class DeviceListAdapter extends BaseAdapter {
 	private final ArrayList<ExtendedBluetoothDevice> listBondedValues = new ArrayList<>();
 	private final ArrayList<ExtendedBluetoothDevice> listValues = new ArrayList<>();
 
-	DeviceListAdapter() {
+	public DeviceListAdapter() {
 	}
 
 	/**
@@ -70,6 +70,7 @@ class DeviceListAdapter extends BaseAdapter {
 	 * @param results list of results from the scanner
 	 */
 	public void update(@NonNull final List<ScanResult> results) {
+		clearDevices();
 		for (final ScanResult result : results) {
 			final ExtendedBluetoothDevice device = findDevice(result);
 			if (device == null) {
