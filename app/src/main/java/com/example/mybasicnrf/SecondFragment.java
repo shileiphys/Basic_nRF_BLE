@@ -1,7 +1,6 @@
 package com.example.mybasicnrf;
 
 import android.Manifest;
-import android.bluetooth.BluetoothManager;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.ParcelUuid;
@@ -9,12 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothDevice;
+
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+
+
+import com.example.mybasicnrf.scanner.DeviceListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +40,10 @@ public class SecondFragment extends Fragment {
     private final static long SCAN_DURATION = 5000;
     private ParcelUuid uuid;
 //    public static final ParcelUuid uuid = ParcelUuid.fromString("0000b81d-0000-1000-8000-00805f9b34fb");
+    private DeviceListAdapter adapter;
 
     private final static int REQUEST_PERMISSION_REQ_CODE = 34;
+    private ListView listView;
 
     @Override
     public View onCreateView(
@@ -47,6 +57,12 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        listView = (ListView) view.findViewById(R.id.scan_list);
+        adapter = new DeviceListAdapter();
+
+        listView.setEmptyView(view.findViewById(android.R.id.empty));
+        listView.setAdapter(adapter);
+
         view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,8 +74,9 @@ public class SecondFragment extends Fragment {
         view.findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v(TAG, "start scan");
                 startScan();
-//                Log.v(TAG, "start scan");
+
             }
         });
     }
@@ -106,9 +123,10 @@ public class SecondFragment extends Fragment {
 
         @Override
         public void onBatchScanResults(@NonNull final List<ScanResult> results) {
-//            Log.v(TAG, "size:" + results.size());
-            Toast myToast = Toast.makeText(getActivity(), "has " + results.size(), Toast.LENGTH_SHORT);
-            myToast.show();
+            Log.v(TAG, "Found Devices:" + results.size());
+            adapter.update(results);
+//            Toast myToast = Toast.makeText(getActivity(), "has " + results.size(), Toast.LENGTH_SHORT);
+//            myToast.show();
         }
 
         @Override
