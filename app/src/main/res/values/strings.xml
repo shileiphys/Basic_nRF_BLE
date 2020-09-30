@@ -11,6 +11,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="scan">Scan</string>
+    <string name="already_scanning">Scanning already started.</string>
 
 <!--    Nordic Strings-->
     <string name="shortcut_dfu_short">DFU</string>
