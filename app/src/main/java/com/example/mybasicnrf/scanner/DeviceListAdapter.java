@@ -22,6 +22,7 @@
 package com.example.mybasicnrf.scanner;
 
 import android.bluetooth.BluetoothDevice;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,12 +47,15 @@ import no.nordicsemi.android.support.v18.scanner.ScanResult;
  * DeviceListAdapter class is list adapter for showing scanned Devices name, address and RSSI image based on RSSI values.
  */
 public class DeviceListAdapter extends BaseAdapter {
+	private final static String TAG = "DeviceListAdapter";
+
 	private static final int TYPE_TITLE = 0;
 	private static final int TYPE_ITEM = 1;
 	private static final int TYPE_EMPTY = 2;
 
 	private final ArrayList<ExtendedBluetoothDevice> listBondedValues = new ArrayList<>();
 	private final ArrayList<ExtendedBluetoothDevice> listValues = new ArrayList<>();
+	private HashMap<Integer, Boolean> checkListView = new HashMap<Integer, Boolean>();
 
 	public DeviceListAdapter() {
 	}
@@ -70,7 +76,6 @@ public class DeviceListAdapter extends BaseAdapter {
 	 * @param results list of results from the scanner
 	 */
 	public void update(@NonNull final List<ScanResult> results) {
-		clearDevices();
 		for (final ScanResult result : results) {
 			final ExtendedBluetoothDevice device = findDevice(result);
 			if (device == null) {
@@ -80,6 +85,9 @@ public class DeviceListAdapter extends BaseAdapter {
 				device.rssi = result.getRssi();
 			}
 		}
+
+		UpdateListValues();  // remove lost connection
+		InitCheckListView(results.size());  // reinitialize checkListView
 		notifyDataSetChanged();
 	}
 
@@ -87,15 +95,41 @@ public class DeviceListAdapter extends BaseAdapter {
 		for (final ExtendedBluetoothDevice device : listBondedValues)
 			if (device.matches(result))
 				return device;
-		for (final ExtendedBluetoothDevice device : listValues)
-			if (device.matches(result))
+//		for (final ExtendedBluetoothDevice device : listValues)
+//			if (device.matches(result))
+//				return device;
+		Log.d(TAG, "listValue size: " + listValues.size());
+		for (int i = 0; i < listValues.size(); i++) {
+			final ExtendedBluetoothDevice device = listValues.get(i);
+			if (device.matches(result)){
+				checkListView.put(i, true);
 				return device;
+			}
+		}
 		return null;
 	}
 
-	void clearDevices() {
+	public void clearDevices() {
+		checkListView.clear();
 		listValues.clear();
 		notifyDataSetChanged();
+	}
+
+	private void InitCheckListView(int size) {
+		checkListView.clear();
+		for (int i = 0; i < size; i++) {
+			checkListView.put(i, false);
+		}
+	}
+	private void UpdateListValues() {
+		for (Map.Entry<Integer,Boolean> entry : checkListView.entrySet()) {
+			int index = entry.getKey();
+			Boolean checked = entry.getValue();
+			if (!checked) {
+//				Log.v(TAG, "checklist rm #: " + index);
+				listValues.remove(index);
+			}
+		}
 	}
 
 	@Override
