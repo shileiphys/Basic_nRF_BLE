@@ -1,4 +1,4 @@
-package com.example.mybasicnrf;
+package com.example.mybasicnrf.scanner;
 
 import android.Manifest;
 import android.content.Context;
@@ -23,8 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 
-import com.example.mybasicnrf.scanner.DeviceListAdapter;
-import com.example.mybasicnrf.scanner.ExtendedBluetoothDevice;
+import com.example.mybasicnrf.R;
 
 import java.util.ArrayList;
 import java.util.List;
