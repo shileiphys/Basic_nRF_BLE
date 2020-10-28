@@ -1,7 +1,6 @@
 package com.example.mybasicnrf;
 
 import android.Manifest;
-import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,12 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothDevice;
 
 
@@ -39,7 +35,7 @@ import no.nordicsemi.android.support.v18.scanner.ScanFilter;
 import no.nordicsemi.android.support.v18.scanner.ScanResult;
 import no.nordicsemi.android.support.v18.scanner.ScanSettings;
 
-public class SecondFragment extends Fragment {
+public class ScannerFragment extends Fragment {
     private final static String TAG = "ScannerFragment";
 
     private final static String PARAM_UUID = "param_uuid";
@@ -93,7 +89,7 @@ public class SecondFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false);
+        return inflater.inflate(R.layout.fragment_scanner, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -114,7 +110,7 @@ public class SecondFragment extends Fragment {
         view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(SecondFragment.this)
+                NavHostFragment.findNavController(ScannerFragment.this)
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
             }
         });

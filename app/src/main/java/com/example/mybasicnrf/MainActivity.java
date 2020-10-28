@@ -3,21 +3,17 @@ package com.example.mybasicnrf;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.util.Log;
-import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements SecondFragment.OnDeviceSelectedListener {
+import com.example.mybasicnrf.scanner.ScannerFragment;
+
+public class MainActivity extends AppCompatActivity implements ScannerFragment.OnDeviceSelectedListener {
     private final static String TAG = "MainActivity";
 
     @Override
