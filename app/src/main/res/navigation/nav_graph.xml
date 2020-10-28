@@ -13,10 +13,10 @@
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/ScannerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/ScannerFragment"
         android:name="com.example.mybasicnrf.scanner.ScannerFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_scanner">
